@@ -4,30 +4,36 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public static Player Instance { get; private set; }
-
+    public static Player instance;
     PlayerMovement playerMovement;
     Animator animator;
+    
 
+    //singleton untuk memastikan hanya ada satu objek saja yang ada 
     void Awake()
     {
-        if (Instance == null)
+        if(instance == null)
         {
-            Instance = this;
+            instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else
+        else if(instance != null)
         {
             Destroy(gameObject);
         }
     }
 
+    // Start is called before the first frame update
     void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
-        animator = GameObject.Find("EngineEffect").GetComponent<Animator>();
+        
+        GameObject engineeffect = GameObject.Find("EngineEffect");
+
+        animator = engineeffect.GetComponent<Animator>();
     }
 
+    // Update is called once per frame
     void FixedUpdate()
     {
         playerMovement.Move();
@@ -35,7 +41,10 @@ public class Player : MonoBehaviour
 
     void LateUpdate()
     {
-        bool isMoving = playerMovement.IsMoving();
-        animator.SetBool("IsMoving", isMoving);
-    }
+        if(animator != null)
+        {
+            animator.SetBool("IsMoving",playerMovement.IsMoving());
+        }
+        
+    }
 }

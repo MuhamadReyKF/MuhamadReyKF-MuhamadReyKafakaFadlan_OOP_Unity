@@ -4,21 +4,27 @@ using UnityEngine;
 
 public class HealthComponent : MonoBehaviour
 {
-    public int maxHealth = 100;
-    private int currentHealth;
+    public int maxHealth = 10;
 
-    private void Awake()
+    private int health;
+
+    void Awake()
     {
-        currentHealth = maxHealth;
+        health = maxHealth;
     }
 
     public void Subtract(int amount)
     {
-        currentHealth -= amount;
-        if (currentHealth <= 0)
+        health -= amount;
+
+        if (health <= 0)
         {
             Destroy(gameObject);
         }
     }
-}
 
+    public int GetHealth()
+    {
+        return health;
+    }
+}
